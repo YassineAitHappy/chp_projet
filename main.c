@@ -6,5 +6,7 @@
 #include "parametre.h"
 
 int main(int argc, char* argv[]) {
-    initialiser_parametres();
+    int n=1;
+    initialiser_parametres(); //initialisations des parametres
+
 }
