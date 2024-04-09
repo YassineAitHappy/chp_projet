@@ -47,8 +47,9 @@ float* v(float x, float y){
 }
 
 
-#include <stdlib.h> 
-#include "parametre.h"
+
+
+
 
 
 float* produit_MV( float* vecteur) {
@@ -110,10 +111,14 @@ float* produit_MV( float* vecteur) {
     return resultat; // Retourne le pointeur vers le vecteur résultat
 }
 float* alpha( float x,float y){
-
+    float res;
+    res = v(x,y)[0]*dt/dx;
+    return res;
 }
 float* beta( float x,float y){
-    
+    float res;
+    res = v(x,y)[1]*dt/dx;
+    return res;
 }
 float* gamma( float x,float y){
     
