@@ -3,7 +3,9 @@
 #include "parametre.h"
 #include <stdlib.h> 
 #include "fonction.h"
-
+extern int space_scheme, time_scheme;
+extern double dx, dy, xmin, xmax, ymin, ymax, Tf, CFL;
+extern int Nx, Ny, cas;
 
 float* produit_MV( float* vecteur) {
 
@@ -28,20 +30,20 @@ float* produit_MV( float* vecteur) {
                             
                         if (I==0)
                         {
-                            resultat[I]=gamma(maillage(I,0),maillage(I,1))*vecteur[I]+alpha(maillage(I+Nx-1,0),maillage(I+Nx-1,1))*vecteur[I+Nx-1]+beta(maillage(I+(Ny-1)*Nx,0),maillage(I+(Ny-1)*Nx,1))*vecteur[I+(Ny-1)*Nx];
+                            resultat[I]=gama(maillage(I,0),maillage(I,1))*vecteur[I]+alpha(maillage(I+Nx-1,0),maillage(I+Nx-1,1))*vecteur[I+Nx-1]+beta(maillage(I+(Ny-1)*Nx,0),maillage(I+(Ny-1)*Nx,1))*vecteur[I+(Ny-1)*Nx];
 
                         }
-                        else if(0<I<Nx)
+                        else if((0<I)&&(I<Nx) )
                         {
-                           resultat[I]=gamma(maillage(I,0),maillage(I,1))*vecteur[I]+alpha(maillage(I-1,0),maillage(I-1,1))*vecteur[I-1]+beta(maillage(I+(Ny-1)*Nx,0),maillage(I+(Ny-1)*Nx,1))*vecteur[I+(Ny-1)*Nx];
+                           resultat[I]=gama(maillage(I,0),maillage(I,1))*vecteur[I]+alpha(maillage(I-1,0),maillage(I-1,1))*vecteur[I-1]+beta(maillage(I+(Ny-1)*Nx,0),maillage(I+(Ny-1)*Nx,1))*vecteur[I+(Ny-1)*Nx];
                         }
                         else if(I%Nx==0)
                         {
-                            resultat[I]=gamma(maillage(I,0),maillage(I,1))*vecteur[I]+alpha(maillage(I-1,0),maillage(I-1,1))*vecteur[I-1]+beta(maillage(I-Nx,0),maillage(I-Nx,1))*vecteur[I-Nx]+alpha(maillage(I+Nx-1,0),maillage(I+Nx-1,1))*vecteur[I+Nx-1];
+                            resultat[I]=gama(maillage(I,0),maillage(I,1))*vecteur[I]+alpha(maillage(I-1,0),maillage(I-1,1))*vecteur[I-1]+beta(maillage(I-Nx,0),maillage(I-Nx,1))*vecteur[I-Nx]+alpha(maillage(I+Nx-1,0),maillage(I+Nx-1,1))*vecteur[I+Nx-1];
                         }
                         else
                         {
-                            resultat[I]=gamma(maillage(I,0),maillage(I,1))*vecteur[I]+alpha(maillage(I-1,0),maillage(I-1,1))*vecteur[I-1]+beta(maillage(I-Nx,0),maillage(I-Nx,1))*vecteur[I-Nx];
+                            resultat[I]=gama(maillage(I,0),maillage(I,1))*vecteur[I]+alpha(maillage(I-1,0),maillage(I-1,1))*vecteur[I-1]+beta(maillage(I-Nx,0),maillage(I-Nx,1))*vecteur[I-Nx];
                         }
 
                         }
@@ -83,28 +85,32 @@ float* produit_MV( float* vecteur) {
 }
 
 
-int index(int i,int j){ // focntion qui donne l'indice de l'element stocké en fonction de i et j
+int indexe(int i,int j){ // focntion qui donne l'indice de l'element stocké en fonction de i et j
     return (j-1)*Nx+i-1;
 } 
 int couple(int I,int axis){ //focntion inverse de index qui donne i ou j selon axe choisi
+    int result;
     if (axis==0) 
     {
-        return I%Nx+1;
+        result= I%Nx+1;
     }
     else if (axis==1)
     {
-        return I/Ny+1;
+        result= I/Ny+1;
     }
+    return result;
 }
 
 float maillage(int I,int axis){ // fonction qui donne xi ou xj selon axe choisi
+    float result;
     if (axis==0) 
     {
-        return (couple(I,0)*1.0)/Nx;
+         result=(couple(I,0)*1.0)/Nx;
     }
     else if (axis==1)
     {
-        return (couple(I,1)*1.0)/Ny;
+        result=(couple(I,1)*1.0)/Ny;
     }
+    return result;
     
 }

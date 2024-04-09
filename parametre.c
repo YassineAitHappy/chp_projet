@@ -1,9 +1,9 @@
 #include "parametre.h"
 
-
-int space_scheme, time_scheme;
+ 
+ int space_scheme, time_scheme;
 double dx, dy, xmin, xmax, ymin, ymax, Tf, CFL;
-int Nx=4, Ny=3, cas=1;
+ int Nx=4, Ny=3, cas=1;
 
 
 void initialiser_parametres() { 
