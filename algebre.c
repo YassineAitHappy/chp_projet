@@ -132,3 +132,9 @@ void differenceTableaux(float *A, float *B, float *C, int taille) {
         C[i] = A[i] - B[i];
     }
 }
+
+void scalaireMultiplieTableau(float scalaire, float *vecteur, float *resultat, int taille) {
+    for (int i = 0; i < taille; i++) {
+        resultat[i] = scalaire * vecteur[i];
+    }
+}
