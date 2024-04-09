@@ -47,6 +47,92 @@ float* v(float x, float y){
     }
 }
 
+int produitScalaire(int *A, int *B, int taille) {
+    int produit = 0;
+    for (int i = 0; i < taille; i++) {
+        produit += *(A + i) * *(B + i);
+    }
+    return produit;
+}
+
+void copierTableau(int *source, int *destination, int taille) {
+    for (int i = 0; i < taille; i++) {
+        *(destination + i) = *(source + i);
+    }
+}
+
+void sommeTableaux(int *A, int *B, int *C, int taille) {
+    for (int i = 0; i < taille; i++) {
+        *(C + i) = *(A + i) + *(B + i);
+    }
+}
 
 
 
+float* produit_MV( float* vecteur) {
+
+    float* resultat = (float*)malloc(Nx*Ny* sizeof(float)); 
+
+
+    // Calcul du produit matrice-vecteur
+    if (vecteur== NULL) {
+        
+        return NULL;
+    }
+    else{
+     switch(time_scheme) {
+        case 1://Explicit
+    
+            switch(space_scheme) {
+
+                case 2://Upwind
+
+                    for (int I=0,I<Nx*Ny,I++){
+
+
+
+
+
+
+
+
+                                }
+
+
+
+
+
+
+
+
+
+                    break;
+            }
+            break;
+
+        case 2://Implicit
+            switch(space_scheme) {
+
+                case 1://Centré
+           
+                    break; 
+        
+             }
+          
+            break;
+     }
+
+    
+   
+    }
+    return resultat; // Retourne le pointeur vers le vecteur résultat
+}
+float* alpha( float x,float y){
+
+}
+float* beta( float x,float y){
+    
+}
+float* gamma( float x,float y){
+    
+}
