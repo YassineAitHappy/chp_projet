@@ -7,6 +7,7 @@ extern int space_scheme, time_scheme;
 extern double dx, dy, xmin, xmax, ymin, ymax, Tf, CFL;
 extern int Nx, Ny, cas;
 
+
 float* produit_MV( float* vecteur) {
 
     float* resultat = (float*)malloc(Nx*Ny* sizeof(float)); 
@@ -82,9 +83,8 @@ float* produit_MV( float* vecteur) {
    
     }
     return resultat; // Retourne le pointeur vers le vecteur résultat
+
 }
-
-
 int indexe(int i,int j){ // focntion qui donne l'indice de l'element stocké en fonction de i et j
     return (j-1)*Nx+i-1;
 } 
@@ -113,4 +113,36 @@ float maillage(int I,int axis){ // fonction qui donne xi ou xj selon axe choisi
     }
     return result;
     
+}
+
+float produitScalaire(float *A, float *B, int taille) {
+    float produit = 0;
+    for (int i = 0; i < taille; i++) {
+        produit += A[i] * B[i];
+    }
+    return produit;
+}
+
+void copierTableau(float *source, float *destination, int taille) {
+    for (int i = 0; i < taille; i++) {
+        destination[i] = source[i];
+    }
+}
+
+void sommeTableaux(float *A, float *B, float *C, int taille) {
+    for (int i = 0; i < taille; i++) {
+        C[i] = A[i] + B[i];
+    }
+}
+
+void differenceTableaux(float *A, float *B, float *C, int taille) {
+    for (int i = 0; i < taille; i++) {
+        C[i] = A[i] - B[i];
+    }
+}
+
+void scalaireMultiplieTableau(float scalaire, float *vecteur, float *resultat, int taille) {
+    for (int i = 0; i < taille; i++) {
+        resultat[i] = scalaire * vecteur[i];
+    }
 }

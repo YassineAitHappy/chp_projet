@@ -11,6 +11,16 @@
 
 float* produit_MV( float* vecteur) ;
 
+float produitScalaire(float *A, float *B, int taille);
+
+void copierTableau(float *source, float *destination, int taille); 
+
+void sommeTableaux(float *A, float *B, float *C, int taille);
+
+void differenceTableaux(float *A, float *B, float *C, int taille);
+
+void scalaireMultiplieTableau(float scalaire, float *vecteur, float *resultat, int taille);
+
 
 
 

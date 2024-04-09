@@ -53,14 +53,78 @@ float* v(float x, float y){
 }
 
 
+#include <stdlib.h> 
+#include "parametre.h"
 
+
+float* produit_MV( float* vecteur) {
+
+    float* resultat = (float*)malloc(Nx*Ny* sizeof(float)); 
+
+
+    // Calcul du produit matrice-vecteur
+    if (vecteur== NULL) {
+        
+        return NULL;
+    }
+    else{
+     switch(time_scheme) {
+        case 1://Explicit
+    
+            switch(space_scheme) {
+
+                case 2://Upwind
+
+                    for (int I=0,I<Nx*Ny,I++){
+
+
+
+
+
+
+
+
+                                }
+
+
+
+
+
+
+
+
+
+                    break;
+            }
+            break;
+
+        case 2://Implicit
+            switch(space_scheme) {
+
+                case 1://Centré
+           
+                    break; 
+        
+             }
+          
+            break;
+     }
+
+    
+   
+    }
+    return resultat; // Retourne le pointeur vers le vecteur résultat
+}
 float alpha( float x,float y){
-return 1.0;
+    float res;
+    res = v(x,y)[0]*dt/dx;
+    return res;
 }
 float beta( float x,float y){
-    return 2.0;
-
+    float res;
+    res = v(x,y)[1]*dt/dx;
+    return res;
 }
 float gama( float x,float y){
-    return 3.0;
+    return 1-alpha(x,y)-beta(x,y);
 }
