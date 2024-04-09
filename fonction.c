@@ -46,9 +46,26 @@ float* v(float x, float y){
     }
 }
 
+int produitScalaire(int *A, int *B, int taille) {
+    int produit = 0;
+    for (int i = 0; i < taille; i++) {
+        produit += *(A + i) * *(B + i);
+    }
+    return produit;
+}
 
-#include <stdlib.h> 
-#include "parametre.h"
+void copierTableau(int *source, int *destination, int taille) {
+    for (int i = 0; i < taille; i++) {
+        *(destination + i) = *(source + i);
+    }
+}
+
+void sommeTableaux(int *A, int *B, int *C, int taille) {
+    for (int i = 0; i < taille; i++) {
+        *(C + i) = *(A + i) + *(B + i);
+    }
+}
+
 
 
 float* produit_MV( float* vecteur) {
