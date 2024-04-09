@@ -11,5 +11,16 @@ float* u0(float x, float y);
 
 
 
+float* alpha( float x,float y);
+float* beta( float x,float y);
+float* gamma( float x,float y);
+    
+
+
+
+
+
+
+
 
 #endif // FONCTION_H

@@ -2,6 +2,7 @@
 #include "math.h"
 #include "parametre.h"
 #include <stdlib.h> 
+#include "fonction.h"
 
 
 float* produit_MV( float* vecteur) {
@@ -80,15 +81,7 @@ float* produit_MV( float* vecteur) {
     }
     return resultat; // Retourne le pointeur vers le vecteur résultat
 }
-float alpha( float x,float y){
 
-}
-float beta( float x,float y){
-    
-}
-float gamma( float x,float y){
-    
-}
 
 int index(int i,int j){ // focntion qui donne l'indice de l'element stocké en fonction de i et j
     return (j-1)*Nx+i-1;

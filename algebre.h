@@ -17,10 +17,7 @@ float* produit_MV( float* vecteur) ;
 
 
 
-        
-float alpha( float x,float y);
-float beta( float x,float y);
-float gamma( float x,float y);
+
 
 
 int index(int i,int j); // focntion qui donne l'indice de l'element stocké en fonction de i et j
