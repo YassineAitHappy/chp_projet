@@ -1,24 +1,26 @@
 #include "BiCGstab.h"
+#include "algebre.h"
+#include "fonction.h" 
+#include "math.h"
+#include "stdio.h"
+#include "stdlib.h"
 
 
-void bicgstab(float **A, float *b, float *x, int N, float tol, int max_iter) {
+void bicgstab( float *b, float *x, int N, float tol, int max_iter) {
     float *r = (float *)malloc(N * sizeof(float));
     float *r_hat = (float *)malloc(N * sizeof(float));
     float *v = (float *)malloc(N * sizeof(float));
     float *p = (float *)malloc(N * sizeof(float));
     float *s = (float *)malloc(N * sizeof(float));
     float *t = (float *)malloc(N * sizeof(float));
-    float rho = 1.0, alpha = 1.0, omega = 1.0, rho_1, beta;
+    float rho = 1.0, coeff1 = 1.0, omega = 1.0, rho_1,coeff2 ;
     float norm_b = 0.0, norm_r = 0.0, tol_sq = tol * tol;
     int i, iter = 0;
 
     // Initialisation
-    produitMatriceVecteur(A, x, r, N); // r = A*x
-    for (i = 0; i < N; ++i) {
-        r[i] = b[i] - r[i]; // r = b - A*x
-        r_hat[i] = r[i];
-        norm_b += b[i] * b[i];
-    }
+    differenceTableaux(b,produit_MV(x),r,N); // r = b-A*x
+    copierTableau(r,r_hat,N);
+    norm_b=norm( b, N);
     if (sqrt(norm_b) < tol) {
         free(r); free(r_hat); free(v); free(p); free(s); free(t);
         return;
@@ -36,26 +38,29 @@ void bicgstab(float **A, float *b, float *x, int N, float tol, int max_iter) {
         if (iter == 0) {
             copierTableau(r, p, N);
         } else {
-            beta = (rho / rho_1) * (alpha / omega);
+            coeff2 = (rho / rho_1) * (coeff1 / omega);
             for (i = 0; i < N; ++i) {
-                p[i] = r[i] + beta * (p[i] - omega * v[i]);
+                p[i] = r[i] + coeff2 * (p[i] - omega * v[i]);
             }
         }
+        
+        copierTableau(produit_MV(p),v,N); // v = A*p
+        coeff1 = rho / produitScalaire(r_hat, v, N);
 
-        produitMatriceVecteur(A, p, v, N); // v = A*p
-        alpha = rho / produitScalaire(r_hat, v, N);
+        scalaireMultiplieTableau(coeff1,v,s,N);
+        differenceTableaux(r,s,s,N);// s = r - coeff1*v
 
-        for (i = 0; i < N; ++i) s[i] = r[i] - alpha * v[i]; // s = r - alpha*v
-
-        produitMatriceVecteur(A, s, t, N); // t = A*s
+        copierTableau(produit_MV(s),t,N); // t = A*s
         omega = produitScalaire(t, s, N) / produitScalaire(t, t, N);
 
-        for (i = 0; i < N; ++i) {
-            x[i] += alpha * p[i] + omega * s[i];
-            r[i] = s[i] - omega * t[i];
-        }
+        scalaireMultiplieTableau(coeff1,p,p,N);
+        scalaireMultiplieTableau(omega,s,s,N);
+        sommeTableaux(p,s,x,N);//x=coeff1*p+omega*s
+        
+        scalaireMultiplieTableau(omega,t,r,N);
+        differenceTableaux(s,r,r,N);;//r=s-omega*t
 
-        norm_r = produitScalaire(r, r, N);
+        norm_r =norm(r,N);
         if (sqrt(norm_r) < tol) break; // Convergence check
     }
 

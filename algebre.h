@@ -21,6 +21,7 @@ void differenceTableaux(float *A, float *B, float *C, int taille);
 
 void scalaireMultiplieTableau(float scalaire, float *vecteur, float *resultat, int taille);
 
+float norm(float *A, int taille) ;
 
 
 

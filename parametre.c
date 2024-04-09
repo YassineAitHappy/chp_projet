@@ -1,7 +1,7 @@
 #include "parametre.h"
 
  
- int space_scheme, time_scheme;
+ int space_scheme=2, time_scheme=1;
 double dx, dy, xmin, xmax, ymin, ymax, Tf, CFL;
  int Nx=4, Ny=3, cas=1;
 

@@ -19,14 +19,18 @@ float* produit_MV( float* vecteur) {
         return NULL;
     }
     else{
-     switch(time_scheme) {
-        case 1://Explicit
-    
+
             switch(space_scheme) {
+
+
+                case 1://Centré
+           
+                    break; 
+
 
                 case 2://Upwind
 
-                    for (int I=1;I<Nx*Ny;I++){
+                    for (int I=0;I<Nx*Ny;I++){
                         
                             
                         if (I==0)
@@ -64,19 +68,8 @@ float* produit_MV( float* vecteur) {
 
 
                     break;
-            }
-            break;
 
-        case 2://Implicit
-            switch(space_scheme) {
-
-                case 1://Centré
-           
-                    break; 
-        
-             }
-          
-            break;
+     
      }
 
     
@@ -96,7 +89,7 @@ int couple(int I,int axis){ //focntion inverse de index qui donne i ou j selon a
     }
     else if (axis==1)
     {
-        result= I/Ny+1;
+        result= I/Nx+1;
     }
     return result;
 }
@@ -121,6 +114,15 @@ float produitScalaire(float *A, float *B, int taille) {
         produit += A[i] * B[i];
     }
     return produit;
+}
+float norm(float *A, int taille) {
+    float produit = 0.0;
+    float resultat ;
+    for (int i = 0; i < taille; i++) {
+        produit += A[i] * A[i];
+    }
+    resultat=sqrt(produit);
+    return resultat;
 }
 
 void copierTableau(float *source, float *destination, int taille) {
