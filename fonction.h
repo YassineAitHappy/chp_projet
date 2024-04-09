@@ -3,8 +3,12 @@
 
 
 float* v(float x, float y);
-
 float* u0(float x, float y);
+
+
+
+
+
 
 
 
