@@ -1,6 +1,6 @@
 #ifndef BICGSTAB_H
 #define BICGSTAB_H
 
-void bicgstab(float *b, float *x, int N, float tol, int max_iter);
+void bicgstab(double *b, double *x, int N, double tol, int max_iter);
 
 #endif 

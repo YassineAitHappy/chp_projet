@@ -6,15 +6,15 @@
 #include "stdlib.h"
 
 
-void bicgstab( float *b, float *x, int N, float tol, int max_iter) {
-    float *r = (float *)malloc(N * sizeof(float));
-    float *r_hat = (float *)malloc(N * sizeof(float));
-    float *v = (float *)malloc(N * sizeof(float));
-    float *p = (float *)malloc(N * sizeof(float));
-    float *s = (float *)malloc(N * sizeof(float));
-    float *t = (float *)malloc(N * sizeof(float));
-    float rho = 1.0, coeff1 = 1.0, omega = 1.0, rho_1,coeff2 ;
-    float norm_b = 0.0, norm_r = 0.0, tol_sq = tol * tol;
+void bicgstab( double *b, double *x, int N, double tol, int max_iter) {
+    double *r = (double *)malloc(N * sizeof(double));
+    double *r_hat = (double *)malloc(N * sizeof(double));
+    double *v = (double *)malloc(N * sizeof(double));
+    double *p = (double *)malloc(N * sizeof(double));
+    double *s = (double *)malloc(N * sizeof(double));
+    double *t = (double *)malloc(N * sizeof(double));
+    double rho = 1.0, coeff1 = 1.0, omega = 1.0, rho_1,coeff2 ;
+    double norm_b = 0.0, norm_r = 0.0, tol_sq = tol * tol;
     int i, iter = 0;
 
     // Initialisation

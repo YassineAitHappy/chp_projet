@@ -4,13 +4,13 @@
 #include <stdlib.h> 
 #include "fonction.h"
 extern int space_scheme, time_scheme;
-extern float dx, dy, xmin, xmax, ymin, ymax, Tf, CFL;
+extern double dx, dy, xmin, xmax, ymin, ymax, Tf, CFL;
 extern int Nx, Ny, cas;
 
 
-float* produit_MV( float* vecteur) {
+double* produit_MV( double* vecteur) {
 
-    float* resultat = (float*)malloc(Nx*Ny* sizeof(float)); 
+    double* resultat = (double*)malloc(Nx*Ny* sizeof(double)); 
 
 
     // Calcul du produit matrice-vecteur
@@ -91,7 +91,7 @@ float* produit_MV( float* vecteur) {
                                 }
                             }
                         }
-                    float* resultat_copy = (float*)malloc(Nx*Ny* sizeof(float));
+                    double* resultat_copy = (double*)malloc(Nx*Ny* sizeof(double));
                     copierTableau(resultat,resultat_copy,Nx*Ny);
                     scalaireMultiplieTableau(dt_imp,resultat,resultat,Nx*Ny);
                     sommeTableaux(resultat,resultat_copy,resultat,Nx*Ny);
@@ -168,8 +168,8 @@ int couple(int I,int axis){ //focntion inverse de index qui donne i ou j selon a
     return result;
 }
 
-float maillage(int I,int axis){ // fonction qui donne xi ou xj selon axe choisi
-    float result;
+double maillage(int I,int axis){ // fonction qui donne xi ou xj selon axe choisi
+    double result;
     if (axis==0) 
     {
          result=couple(I,0)*dx;
@@ -182,16 +182,16 @@ float maillage(int I,int axis){ // fonction qui donne xi ou xj selon axe choisi
     
 }
 
-float produitScalaire(float *A, float *B, int taille) {
-    float produit = 0;
+double produitScalaire(double *A, double *B, int taille) {
+    double produit = 0;
     for (int i = 0; i < taille; i++) {
         produit += A[i] * B[i];
     }
     return produit;
 }
-float norm(float *A, int taille) {
-    float produit = 0.0;
-    float resultat ;
+double norm(double *A, int taille) {
+    double produit = 0.0;
+    double resultat ;
     for (int i = 0; i < taille; i++) {
         produit += A[i] * A[i];
     }
@@ -199,25 +199,25 @@ float norm(float *A, int taille) {
     return resultat;
 }
 
-void copierTableau(float *source, float *destination, int taille) {
+void copierTableau(double *source, double *destination, int taille) {
     for (int i = 0; i < taille; i++) {
         destination[i] = source[i];
     }
 }
 
-void sommeTableaux(float *A, float *B, float *C, int taille) {
+void sommeTableaux(double *A, double *B, double *C, int taille) {
     for (int i = 0; i < taille; i++) {
         C[i] = A[i] + B[i];
     }
 }
 
-void differenceTableaux(float *A, float *B, float *C, int taille) {
+void differenceTableaux(double *A, double *B, double *C, int taille) {
     for (int i = 0; i < taille; i++) {
         C[i] = A[i] - B[i];
     }
 }
 
-void scalaireMultiplieTableau(float scalaire, float *vecteur, float *resultat, int taille) {
+void scalaireMultiplieTableau(double scalaire, double *vecteur, double *resultat, int taille) {
     for (int i = 0; i < taille; i++) {
         resultat[i] = scalaire * vecteur[i];
     }
