@@ -6,13 +6,15 @@
 
 extern int space_scheme, time_scheme;
 extern double dx, dy, xmin, xmax, ymin, ymax, Tf, CFL;
+extern double dx, dy, xmin, xmax, ymin, ymax, Tf, CFL;
 extern int Nx, Ny, cas;
+
 
 double u0(double x, double y){ 
     double result;
     switch (cas) {
         case 1://translation gaussienne
-            result=exp((-pow(x,2)/0.0075)-pow(y,2)/0.0075);
+            result=exp(-(pow(x,2)+pow(y,2))/0.0075);
             break;
         case 2://translation cylindre
             if (sqrt(x*x+y*y) < 0.4){
@@ -74,6 +76,6 @@ double beta( double x,double y){
 }
 double gama( double x,double y){
     double res;
-    res=-alpha(x,y)-beta(x,y);
+    res = -alpha(x,y)-beta(x,y);
     return res;
 }
