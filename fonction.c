@@ -57,12 +57,12 @@ float* v(float x, float y){
 
 float alpha( float x,float y){
     float res;
-    res = v(x,y)[0]/dx;
+    res = v(x,y)[0]/(2*dx);
     return res;
 }
 float beta( float x,float y){
     float res;
-    res = v(x,y)[1]/dx;
+    res = v(x,y)[1]/(2*dy);
     return res;
 }
 float gama( float x,float y){

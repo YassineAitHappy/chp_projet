@@ -5,8 +5,7 @@
 double dx, dy, xmin, xmax, ymin, ymax, Tf, CFL;
  int Nx=4, Ny=3, cas=1;
 
-
-void initialiser_parametres() { 
+int main(int argc, char* argv[]){ 
     switch (cas) {
         case 1:
             xmin=-1;

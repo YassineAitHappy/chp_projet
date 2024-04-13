@@ -67,6 +67,18 @@ int main(int argc, char* argv[]) {
                 sommeTableaux(vect_u, vect_un, vect_un, Nx * Ny);
                 T += dt;
             }
+            FILE *fichier_resultats;
+            fichier_resultats = fopen("resultats.txt", "w");
+            if (fichier_resultats == NULL) {
+                printf("Erreur lors de l'ouverture du fichier de résultats.");
+                return 1; // Quitte le programme avec un code d'erreur
+            }
+
+            for (int i = 0; i < Nx*Ny; i++) {
+                fprintf(fichier_resultats, "%f\n", vect_un[i]);
+            }
+
+            fclose(fichier_resultats);
         }
         break;
         
