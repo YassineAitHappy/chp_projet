@@ -4,7 +4,7 @@
 #include <stdlib.h> 
 #include "fonction.h"
 extern int space_scheme, time_scheme;
-extern double dx, dy, xmin, xmax, ymin, ymax, Tf, CFL;
+extern float dx, dy, xmin, xmax, ymin, ymax, Tf, CFL;
 extern int Nx, Ny, cas;
 
 
@@ -91,6 +91,10 @@ float* produit_MV( float* vecteur) {
                                 }
                             }
                         }
+                    float* resultat_copy = (float*)malloc(Nx*Ny* sizeof(float));
+                    copierTableau(resultat,resultat_copy,Nx*Ny);
+                    scalaireMultiplieTableau(dt_imp,resultat,resultat,Nx*Ny);
+                    sommeTableaux(resultat,resultat_copy,resultat,Nx*Ny);
                 
                     }
                     break; 

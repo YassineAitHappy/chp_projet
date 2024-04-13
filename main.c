@@ -5,7 +5,7 @@
 #include "BiCGstab.h"
 #include "parametre.h"
 extern int space_scheme, time_scheme;
-extern double dx, dy, xmin, xmax, ymin, ymax, Tf, CFL;
+extern float dx, dy, xmin, xmax, ymin, ymax, Tf, CFL;
 extern int Nx, Ny, cas;
 int main(int argc, char* argv[]) {
     initialiser_parametres();
@@ -58,35 +58,67 @@ int main(int argc, char* argv[]) {
             CFL = (max_vx / dx) + (max_vy / dy);
             float dt = 1 / CFL;
 
-            float T = 0;
-            while (T < Tf) {
+            FILE* file_explicit = fopen("result_explicit.txt", "w"); // Ouvrir le fichier en écriture
+                if (file_explicit == NULL) {
+                    printf("Erreur lors de la création du fichier result_explicit.txt\n");
+                    return 1;
+                }
+
+            // Boucle temporelle pour l'explicite
+            float T_explicit = 0;
+            while (T_explicit < Tf) {
+                // Mise à jour du vecteur de résolution pour la prochaine étape de temps
                 copierTableau(produit_MV(vect_u), vect_un, Nx * Ny);
                 scalaireMultiplieTableau(dt, vect_un, vect_un, Nx * Ny);
                 sommeTableaux(vect_u, vect_un, vect_un, Nx * Ny);
-                T += dt;
-            }
-            FILE *fichier_resultats;
-            fichier_resultats = fopen("resultats.txt", "w");
-            if (fichier_resultats == NULL) {
-                printf("Erreur lors de l'ouverture du fichier de résultats.");
-                return 1; // Quitte le programme avec un code d'erreur
+
+                // Écrire les valeurs du vecteur de résolution dans le fichier pour cette itération de temps
+                for (int i = 0; i < Nx * Ny; i++) {
+                    fprintf(file_explicit, "%f ", vect_u[i]);
+                }
+                fprintf(file_explicit, "\n"); // Saut de ligne pour passer à l'itération de temps suivante
+
+                T_explicit += dt; // Incrémentation du temps
             }
 
-            for (int i = 0; i < Nx*Ny; i++) {
-                fprintf(fichier_resultats, "%f\n", vect_un[i]);
-            }
-
-            fclose(fichier_resultats);
+            fclose(file_explicit); // Fermer le fichier
         }
         break;
         
     case 2: //Implicit
-        // Implémentation du cas implicite
+    {
+        FILE* file_implicit = fopen("result_implicit.txt", "w"); // Ouvrir le fichier en écriture
+                if (file_implicit == NULL) {
+                    printf("Erreur lors de la création du fichier result_implicit.txt\n");
+                    return 1;
+                }
+
+                // Boucle temporelle pour l'implicite
+                float T_implicit = 0;
+                while (T_implicit < Tf) {
+                    // Résolution du système d'équations pour la prochaine étape de temps
+                    bicgstab(vect_u, vect_un, Nx * Ny, 0.0001, 20);
+
+                    // Écrire les valeurs du vecteur de résolution dans le fichier pour cette itération de temps
+                    for (int i = 0; i < Nx * Ny; i++) {
+                        fprintf(file_implicit, "%f ", vect_u[i]);
+                    }
+                    fprintf(file_implicit, "\n"); // Saut de ligne pour passer à l'itération de temps suivante
+
+                    T_implicit += dt_imp; // Incrémentation du temps
+                }
+
+                fclose(file_implicit); // Fermer le fichier
+            }
         break;
-}
+    }
 
+    // Libération de la mémoire allouée
+    free(x0);
+    free(vect_u);
+    free(vect_un);
 
-
+    return 0;
 }
 
 

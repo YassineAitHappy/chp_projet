@@ -4,7 +4,7 @@
 #include <stdlib.h> 
 
 extern int space_scheme, time_scheme;
-extern double dx, dy, xmin, xmax, ymin, ymax, Tf, CFL;
+extern float dx, dy, xmin, xmax, ymin, ymax, Tf, CFL;
 extern int Nx, Ny, cas;
 
 float u0(float x, float y){ 
