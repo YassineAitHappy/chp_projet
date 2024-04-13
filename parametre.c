@@ -14,6 +14,8 @@ void initialiser_parametres() {
             ymin=-1;
             ymax=1;
             Tf=4;
+            dx=(xmax-xmin)/Nx;
+            dy=(ymax-ymin)/Ny;
             break;
         case 2:
             xmin=-1;
@@ -21,6 +23,8 @@ void initialiser_parametres() {
             ymin=-1;
             ymax=1;
             Tf=5;
+            dx=(xmax-xmin)/Nx;
+            dy=(ymax-ymin)/Ny;
             break;
         default:
             xmin=-1;
@@ -28,6 +32,8 @@ void initialiser_parametres() {
             ymin=-0.5;
             ymax=0.5;
             Tf=2;
+            dx=(xmax-xmin)/Nx;
+            dy=(ymax-ymin)/Ny;
             break;
     }
 }

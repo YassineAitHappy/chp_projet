@@ -51,7 +51,9 @@ float* produit_MV( float* vecteur) {
                             resultat[I]=gama(maillage(I,0),maillage(I,1))*vecteur[I]+alpha(maillage(I-1,0),maillage(I-1,1))*vecteur[I-1]+beta(maillage(I-Nx,0),maillage(I-Nx,1))*vecteur[I-Nx];
                         }
 
-                        }
+                    }
+
+                
 
 
 
@@ -98,11 +100,11 @@ float maillage(int I,int axis){ // fonction qui donne xi ou xj selon axe choisi
     float result;
     if (axis==0) 
     {
-         result=(couple(I,0)*1.0)/Nx;
+         result=couple(I,0)*dx;
     }
     else if (axis==1)
     {
-        result=(couple(I,1)*1.0)/Ny;
+        result=couple(I,1)*dy;
     }
     return result;
     
