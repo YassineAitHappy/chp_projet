@@ -4,6 +4,7 @@
 #include "algebre.h"
 #include "BiCGstab.h"
 #include "parametre.h"
+#include "math.h"
 extern int space_scheme, time_scheme;
 extern double dx, dy, xmin, xmax, ymin, ymax, Tf, CFL;
 extern int Nx, Ny, cas;
@@ -23,8 +24,8 @@ int main(int argc, char* argv[]) {
     double* vect_u = (double*)malloc(Nx*Ny* sizeof(double));
     for (int i=0 ;i<Nx*Ny ;i++)
     {
-        vect_u[i]=u0(maillage(i,0),maillage(i,1));
-        printf("xi=%f,uj=%f: %f\n",maillage(i,0),maillage(i,1),vect_u[i]);
+        vect_u[i]=exp(-(pow(maillage(i,0),2)+pow(maillage(i,0),2))/0.0075);//u0(maillage(i,0),maillage(i,1));
+        printf("xi=%f,yj=%f: %f\n",maillage(i,0),maillage(i,1),vect_u[i]);
     }
     double* vect_un = (double*)malloc(Nx*Ny* sizeof(double));
 
@@ -67,7 +68,10 @@ int main(int argc, char* argv[]) {
                     printf("Erreur lors de la création du fichier result_explicit.txt\n");
                     return 1;
                 }
-
+            for (int i = 0; i < Nx * Ny; i++) {
+                    fprintf(file_explicit, "%f ", vect_u[i]);
+                }
+                fprintf(file_explicit, "\n"); // Saut de ligne pour passer à l'itération de temps suivante
             // Boucle temporelle pour l'explicite
             double T_explicit = 0;
             while (T_explicit < Tf) {
@@ -96,7 +100,10 @@ int main(int argc, char* argv[]) {
                     printf("Erreur lors de la création du fichier result_implicit.txt\n");
                     return 1;
                 }
-
+                for (int i = 0; i < Nx * Ny; i++) {
+                        fprintf(file_implicit, "%f ", vect_u[i]);
+                    }
+                    fprintf(file_implicit, "\n"); // Saut de ligne pour passer à l'itération de temps suivante
                 // Boucle temporelle pour l'implicite
                 double T_implicit = 0;
                 while (T_implicit < Tf) {

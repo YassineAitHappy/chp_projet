@@ -4,14 +4,14 @@
 int space_scheme=2, time_scheme=1;
 double dx, dy, xmin, xmax, ymin, ymax, Tf, CFL;
 double dt_imp=0.01;
-int Nx=4, Ny=3, cas=1;
+int Nx=50, Ny=50, cas=1;
 
 
 void initialiser_parametres() {
     switch (cas) {
         case 1:
-            xmin=-1;
-            xmax=1;
+            xmin=-1.0;
+            xmax=1.0;
             ymin=-0.5;
             ymax=0.5;
             Tf=2;

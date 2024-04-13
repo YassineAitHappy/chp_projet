@@ -125,22 +125,6 @@ double* produit_MV( double* vecteur) {
 
                     }
 
-                
-
-
-
-
-
-                                
-
-
-
-
-
-
-
-
-
                     break;
 
      
@@ -172,11 +156,11 @@ double maillage(int I,int axis){ // fonction qui donne xi ou xj selon axe choisi
     double result;
     if (axis==0) 
     {
-         result=couple(I,0)*dx;
+         result=xmin+couple(I,0)*dx;
     }
     else if (axis==1)
     {
-        result=couple(I,1)*dy;
+        result=ymin+couple(I,1)*dy;
     }
     return result;
     
