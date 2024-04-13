@@ -4,8 +4,8 @@
 #define PARAMETRE_H
 
 extern int space_scheme, time_scheme;
-extern float dx, dy, xmin, xmax, ymin, ymax, Tf, CFL;
-extern float dt_imp;
+extern double dx, dy, xmin, xmax, ymin, ymax, Tf, CFL;
+extern double dt_imp;
 extern int Nx, Ny, cas;
 
 void initialiser_parametres();
