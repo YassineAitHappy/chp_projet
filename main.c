@@ -8,9 +8,7 @@ extern int space_scheme, time_scheme;
 extern double dx, dy, xmin, xmax, ymin, ymax, Tf, CFL;
 extern int Nx, Ny, cas;
 int main(int argc, char* argv[]) {
-
-    initialiser_parametres(); //initialisations des parametres
-
+    initialiser_parametres();
     float* x0 = (float*)malloc(Nx*Ny* sizeof(float));
     for (int i=0 ;i<Nx*Ny ;i++)
     {
