@@ -1,5 +1,5 @@
 #include "parametre.h"
-
+#include <stdio.h>
  
 int space_scheme=1, time_scheme=2;
 float dx, dy, xmin, xmax, ymin, ymax, Tf, CFL;
@@ -12,13 +12,22 @@ void initialiser_parametres() {
         case 1:
             xmin=-1;
             xmax=1;
+            ymin=-0.5;
+            ymax=0.5;
+            Tf=2;
+            dx=(xmax-xmin)/Nx;
+            dy=(ymax-ymin)/Ny;
+            break;
+        case 2:
+            xmin=-1;
+            xmax=1;
             ymin=-1;
             ymax=1;
             Tf=4;
             dx=(xmax-xmin)/Nx;
             dy=(ymax-ymin)/Ny;
             break;
-        case 2:
+        case 3:
             xmin=-1;
             xmax=1;
             ymin=-1;
@@ -28,13 +37,7 @@ void initialiser_parametres() {
             dy=(ymax-ymin)/Ny;
             break;
         default:
-            xmin=-1;
-            xmax=1;
-            ymin=-0.5;
-            ymax=0.5;
-            Tf=2;
-            dx=(xmax-xmin)/Nx;
-            dy=(ymax-ymin)/Ny;
+            printf("choisir un cas!");
             break;
     }
 }
