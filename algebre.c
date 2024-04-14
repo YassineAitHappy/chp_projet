@@ -34,12 +34,13 @@ double* produit_MV( double* vecteur) {
                                     resultat[indexe(i,j)]=resultat[indexe(i,j)]-beta(maillage(indexe(i,j)+Nx*(Ny-1),0),maillage(indexe(i,j)+Nx*(Ny-1),1))*vecteur[indexe(i,j)+Nx*(Ny-1)];
                                 }
                                 else if(i==Nx){
-                                    resultat[indexe(i,j)]=-alpha(maillage(indexe(i,j)+Nx-2,0),maillage(indexe(i,j)+Nx-2,1))*vecteur[indexe(i,j)+Nx-2];
-                                    resultat[indexe(i,j)]=resultat[indexe(i,j)]+beta(maillage(indexe(i,j)+2*Nx-1,0),maillage(indexe(i,j)+2*Nx-1,1))*vecteur[indexe(i,j)+2*Nx-1];
-                                    resultat[indexe(i,j)]=resultat[indexe(i,j)]-beta(maillage(indexe(i,j)+Ny*Nx-1,0),maillage(indexe(i,j)+Ny*Nx-1,1))*vecteur[indexe(i,j)+Ny*Nx-1];
+                                    resultat[indexe(i,j)]=alpha(maillage(indexe(i,j)-Nx+1,0),maillage(indexe(i,j)-Nx+1,1))*vecteur[indexe(i,j)-Nx+1];
+                                    resultat[indexe(i,j)]=resultat[indexe(i,j)]-alpha(maillage(indexe(i,j)-1,0),maillage(indexe(i,j)-1,1))*vecteur[indexe(i,j)-1];
+                                    resultat[indexe(i,j)]=resultat[indexe(i,j)]+beta(maillage(indexe(i,j)+Nx,0),maillage(indexe(i,j)+Nx,1))*vecteur[indexe(i,j)+Nx];
+                                    resultat[indexe(i,j)]=resultat[indexe(i,j)]-beta(maillage(indexe(i,j)+Nx*(Ny-1),0),maillage(indexe(i,j)+Nx*(Ny-1),1))*vecteur[indexe(i,j)+Nx*(Ny-1)];
                                 }
                                 else{
-                                    resultat[indexe(i,j)]=-alpha(maillage(indexe(i,j),0),maillage(indexe(i,j),1))*vecteur[indexe(i,j)-1];
+                                    resultat[indexe(i,j)]=-alpha(maillage(indexe(i,j)-1,0),maillage(indexe(i,j)-1,1))*vecteur[indexe(i,j)-1];
                                     resultat[indexe(i,j)]=resultat[indexe(i,j)]+alpha(maillage(indexe(i,j)+1,0),maillage(indexe(i,j)+1,1))*vecteur[indexe(i,j)+1];
                                     resultat[indexe(i,j)]=resultat[indexe(i,j)]+beta(maillage(indexe(i,j)+Nx,0),maillage(indexe(i,j)+Nx,1))*vecteur[indexe(i,j)+Nx];
                                     resultat[indexe(i,j)]=resultat[indexe(i,j)]-beta(maillage(indexe(i,j)+(Ny-1)*Nx,0),maillage(indexe(i,j)+(Ny-1)*Nx,1))*vecteur[indexe(i,j)+(Ny-1)*Nx];
@@ -79,13 +80,13 @@ double* produit_MV( double* vecteur) {
                                 }
                                 else if(i%Nx==0){
                                     resultat[indexe(i,j)]=-beta(maillage(indexe(i,j)-Nx,0),maillage(indexe(i,j)-Nx,1))*vecteur[indexe(i,j)-Nx];
-                                    resultat[indexe(i,j)]=resultat[indexe(i,j)]+alpha(maillage(indexe(i,j)+1,0),maillage(indexe(i,j)+1,1))*vecteur[indexe(i,j)+1];
+                                    resultat[indexe(i,j)]=resultat[indexe(i,j)]+alpha(maillage(indexe(i,j)-Nx+1,0),maillage(indexe(i,j)-Nx+1,1))*vecteur[indexe(i,j)-Nx+1];
                                     resultat[indexe(i,j)]=resultat[indexe(i,j)]-alpha(maillage(indexe(i,j)-1,0),maillage(indexe(i,j)-1,1))*vecteur[indexe(i,j)-1];
                                     resultat[indexe(i,j)]=resultat[indexe(i,j)]+beta(maillage(indexe(i,j)+Nx,0),maillage(indexe(i,j)+Nx,1))*vecteur[indexe(i,j)+Nx];
                                 }
                                 else{
                                     resultat[indexe(i,j)]=-beta(maillage(indexe(i,j)-Nx,0),maillage(indexe(i,j)-Nx,1))*vecteur[indexe(i,j)-Nx];
-                                    resultat[indexe(i,j)]=resultat[indexe(i,j)]+alpha(maillage(indexe(i,j)-Nx+1,0),maillage(indexe(i,j)-Nx+1,1))*vecteur[indexe(i,j)-Nx+1];
+                                    resultat[indexe(i,j)]=resultat[indexe(i,j)]+alpha(maillage(indexe(i,j)+1,0),maillage(indexe(i,j)+1,1))*vecteur[indexe(i,j)+1];
                                     resultat[indexe(i,j)]=resultat[indexe(i,j)]-alpha(maillage(indexe(i,j)-1,0),maillage(indexe(i,j)-1,1))*vecteur[indexe(i,j)-1];
                                     resultat[indexe(i,j)]=resultat[indexe(i,j)]+beta(maillage(indexe(i,j)+Nx,0),maillage(indexe(i,j)+Nx,1))*vecteur[indexe(i,j)+Nx];
                                 }
