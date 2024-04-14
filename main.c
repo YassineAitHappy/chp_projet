@@ -10,6 +10,9 @@ extern double dx, dy, xmin, xmax, ymin, ymax, Tf, CFL;
 extern int Nx, Ny, cas;
 int main(int argc, char* argv[]) {
     initialiser_parametres();
+
+    // testing
+
     double dt_test=0.01;
     double* x0 = (double*)malloc(Nx*Ny* sizeof(double));
     for (int i=0 ;i<Nx*Ny ;i++)
@@ -26,12 +29,25 @@ int main(int argc, char* argv[]) {
     {
         vect_u[i]=exp(-(pow(maillage(i,0),2)+pow(maillage(i,1),2))/0.0075);//u0(maillage(i,0),maillage(i,1));
         // printf("xi=%f,yj=%f: %f\n",maillage(i,0),maillage(i,1),vect_u[i]);
+        //vect_u[i]=u0(maillage(i,0),maillage(i,1));
     }
     double* vect_un = (double*)malloc(Nx*Ny* sizeof(double));
+
+
+
+
+
+
+
 
     switch(time_scheme) {
     case 1: //Explicit
         {
+            //Trouver la cfl
+
+
+
+            //trouver V_x max
             double max_vx; // Déclaration de max_vx au début du bloc de code
             max_vx = abs(v(xmin, ymin)[0]); // Initialisation avec le coin en bas à gauche
             for (int i = 0; i < Nx; i++) {
@@ -45,6 +61,8 @@ int main(int argc, char* argv[]) {
                 }
             }
 
+
+            //trouver V_y max
             double max_vy; // Déclaration de max_vy au début du bloc de code
             max_vy = abs(v(xmin, ymin)[1]); // Initialisation avec le coin en bas à gauche
             for (int i = 0; i < Nx; i++) {
@@ -76,6 +94,8 @@ int main(int argc, char* argv[]) {
                 }
                 fprintf(file_explicit, "\n"); // Saut de ligne pour passer à l'itération de temps suivante
             fclose(file_explicit); // Fermer le fichier
+
+
             // Boucle temporelle pour l'explicite
             double T_explicit = 0;
             int Nt=0;

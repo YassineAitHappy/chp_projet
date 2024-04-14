@@ -26,4 +26,4 @@ $(TARGET): $(OBJECTS)
 
 # Nettoyage des fichiers générés
 clean:
-	rm -f $(OBJECTS) $(TARGET)
+	rm -f $(OBJECTS) $(TARGET) *.dat
