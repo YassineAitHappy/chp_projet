@@ -6,132 +6,84 @@
 #include "stdlib.h"
 
 
-// void bicgstab( double *b, double *x, int N, double tol, int max_iter) {
-//     double *r = (double *)malloc(N * sizeof(double));
-//     double *r_hat = (double *)malloc(N * sizeof(double));
-//     double *v = (double *)malloc(N * sizeof(double));
-//     double *p = (double *)malloc(N * sizeof(double));
-//     double *s = (double *)malloc(N * sizeof(double));
-//     double *t = (double *)malloc(N * sizeof(double));
-//     double rho = 1.0, coeff1 = 1.0, omega = 1.0, rho_1,coeff2 ;
-//     double norm_b = 0.0, norm_r = 0.0, tol_sq = tol * tol;
-//     int i, iter = 0;
 
-//     // Initialisation
-//     differenceTableaux(b,produit_MV(x),r,N); // r = b-A*x
-//     copierTableau(r,r_hat,N);
-//     norm_b=norm( b, N);
-//     if (sqrt(norm_b) < tol) {
-//         free(r); free(r_hat); free(v); free(p); free(s); free(t);
-//         return;
-//     }
-
-//     for (iter = 0; iter < max_iter; ++iter) {
-//         rho_1 = rho;
-//         rho = produitScalaire(r_hat, r, N);
-
-//         if (fabs(rho) < tol) {
-//             printf("BiCGSTAB failed to converge\n");
-//             break;
-//         }
-
-//         if (iter == 0) {
-//             copierTableau(r, p, N);
-//         } else {
-//             coeff2 = (rho / rho_1) * (coeff1 / omega);
-//             for (i = 0; i < N; ++i) {
-//                 p[i] = r[i] + coeff2 * (p[i] - omega * v[i]);
-//             }
-//         }
-        
-//         copierTableau(produit_MV(p),v,N); // v = A*p
-//         coeff1 = rho / produitScalaire(r_hat, v, N);
-
-//         scalaireMultiplieTableau(coeff1,v,s,N);
-//         differenceTableaux(r,s,s,N);// s = r - coeff1*v
-
-//         copierTableau(produit_MV(s),t,N); // t = A*s
-//         omega = produitScalaire(t, s, N) / produitScalaire(t, t, N);
-
-//         scalaireMultiplieTableau(coeff1,p,p,N);
-//         scalaireMultiplieTableau(omega,s,s,N);
-//         sommeTableaux(p,s,x,N);//x=coeff1*p+omega*s
-        
-//         scalaireMultiplieTableau(omega,t,r,N);
-//         differenceTableaux(s,r,r,N);;//r=s-omega*t
-
-//         norm_r =norm(r,N);
-//         if (sqrt(norm_r) < tol) break; // Convergence check
-//     }
-
-//     if (iter >= max_iter) {
-//         printf("BiCGSTAB did not converge within the maximum number of iterations\n");
-//     }
-
-//     free(r); free(r_hat); free(v); free(p); free(s); free(t);
-// }
-
-void bicgstab(double *b, double *x, int N, double tol, int max_iter) {
+void bicgstab(double *b, double *x0, int N, double tol, int max) {
     double *r = (double *)malloc(N * sizeof(double));
     double *r_hat = (double *)malloc(N * sizeof(double));
-    double *v = (double *)malloc(N * sizeof(double));
     double *p = (double *)malloc(N * sizeof(double));
+    double *v = (double *)malloc(N * sizeof(double));
     double *s = (double *)malloc(N * sizeof(double));
     double *t = (double *)malloc(N * sizeof(double));
-    double rho = 1.0, alpha = 1.0, omega = 1.0, rho_1, beta;
-    double norm_b = 0.0, norm_r = 0.0, tol_sq = tol * tol;
-    int i, iter = 0;
+    double *h = (double *)malloc(N * sizeof(double));
+    double rho, alpha, omega, beta;
 
-    // Initialisation
-    produit_MV(x); // r = A*x
-    for (i = 0; i < N; ++i) {
-        r[i] = b[i] - r[i]; // r = b - A*x
-        r_hat[i] = r[i];
-        norm_b += b[i] * b[i];
-    }
-    if (sqrt(norm_b) < tol) {
-        free(r); free(r_hat); free(v); free(p); free(s); free(t);
-        return;
-    }
+    // Initial values
+    copierTableau(produit_MV(x0), r,N); // r = A*x0
+    differenceTableaux(b, r, r, N); // r = b - r
+    copierTableau(r, r_hat, N); // r_hat = r
+    copierTableau(r, p, N); // p = r
+    rho = produitScalaire(r_hat, r, N); // rho = (r_hat, r)
 
-    for (iter = 0; iter < max_iter; ++iter) {
-        rho_1 = rho;
-        rho = produitScalaire(r_hat, r, N);
-
-        if (fabs(rho) < tol) {
-            printf("BiCGSTAB failed to converge\n");
+    for (int i = 0; i < max; i++) {
+        // 1. v = A*p_i-1
+        copierTableau(produit_MV(p), v,N)
+        
+        // 2. alpha = rho_i-1 / (r_hat, v)
+        alpha = rho / produitScalaire(r_hat, v, N);
+        
+        // 3. h = x_i-1 + alpha*p_i-1
+        scalaireMultiplieTableau(alpha, p, h, N); // h = alpha*p
+        sommeTableaux(x0, h, h, N); // h = x0 + h
+        
+        // 4. s = r_i-1 - alpha*v
+        scalaireMultiplieTableau(-alpha, v, s, N); // s = -alpha*v
+        sommeTableaux(r, s, s, N); // s = r + s
+        
+        // Check for convergence
+        if (norm(s, N) < tol) {
+            copierTableau(h, x0, N);
             break;
         }
 
-        if (iter == 0) {
-            copierTableau(r, p, N);
-        } else {
-            beta = (rho / rho_1) * (alpha / omega);
-            for (i = 0; i < N; ++i) {
-                p[i] = r[i] + beta * (p[i] - omega * v[i]);
-            }
-        }
-
-        produit_MV(p); // v = A*p
-        alpha = rho / produitScalaire(r_hat, v, N);
-
-        for (i = 0; i < N; ++i) s[i] = r[i] - alpha * v[i]; // s = r - alpha*v
-
-        produit_MV(s); // t = A*s
+        // 6. t = A*s
+        copierTableau(produit_MV(s), t,N);
+        
+        // 7. omega = (t,s) / (t,t)
         omega = produitScalaire(t, s, N) / produitScalaire(t, t, N);
-
-        for (i = 0; i < N; ++i) {
-            x[i] += alpha * p[i] + omega * s[i];
-            r[i] = s[i] - omega * t[i];
+        
+        // 8. x_i = h + omega*s
+        scalaireMultiplieTableau(omega, s, x0, N); // x0 = omega*s
+        sommeTableaux(h, x0, x0, N); // x0 = h + x0
+        
+        // 9. r_i = s - omega*t
+        scalaireMultiplieTableau(-omega, t, r, N); // r = -omega*t
+        sommeTableaux(s, r, r, N); // r = s + r
+        
+        // Check for convergence
+        if (norm(r, N) < tol) {
+            break;
         }
 
-        norm_r = produitScalaire(r, r, N);
-        if (sqrt(norm_r) < tol) break; // Convergence check
+        // 10. rho_i = (r_hat, r_i)
+        double rho_new = produitScalaire(r_hat, r, N);
+        
+        // 11. beta = (rho_i/rho_i-1)(alpha/omega)
+        beta = (rho_new / rho) * (alpha / omega);
+        
+        // 12. p_i = r_i + beta(p_i-1 - omega*v)
+        scalaireMultiplieTableau(-omega, v, v, N); // v = -omega*v
+        sommeTableaux(p, v, p, N); // p = p + v
+        scalaireMultiplieTableau(beta, p, p, N); // p = beta*p
+        sommeTableaux(r, p, p, N); // p = r + p
+        
+        rho = rho_new;
     }
 
-    if (iter >= max_iter) {
-        printf("BiCGSTAB did not converge within the maximum number of iterations\n");
-    }
-
-    free(r); free(r_hat); free(v); free(p); free(s); free(t);
+    free(r);
+    free(r_hat);
+    free(p);
+    free(v);
+    free(s);
+    free(t);
+    free(h);
 }
