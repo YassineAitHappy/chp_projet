@@ -79,6 +79,7 @@ int main(int argc, char* argv[]) {
             // Boucle temporelle pour l'explicite
             double T_explicit = 0;
             int Nt=0;
+            
             while (T_explicit < Tf) {
                 // Mise à jour du vecteur de résolution pour la prochaine étape de temps
                 copierTableau(produit_MV(vect_u), vect_un, Nx * Ny);
@@ -125,7 +126,7 @@ int main(int argc, char* argv[]) {
             int Nt=0;
                 while (T_implicit < Tf) {
                     // Résolution du système d'équations pour la prochaine étape de temps
-                    bicgstab(vect_u, vect_un, Nx * Ny, 1E-8, 2000);
+                    bicgstab(vect_u, vect_un, Nx * Ny, 1E-8, 100);
                     copierTableau(vect_un,vect_u,Nx*Ny);
 
                     T_implicit += dt_imp; // Incrémentation du temps
