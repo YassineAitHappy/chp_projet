@@ -1,10 +1,10 @@
 #include "parametre.h"
 #include <stdio.h>
  
-int space_scheme=2, time_scheme=1;
+int space_scheme=1, time_scheme=2;
 double dx, dy, xmin, xmax, ymin, ymax, Tf, CFL;
-double dt_imp=0.01;
-int Nx=4, Ny=3, cas=1;
+double dt_imp=0.1;
+int Nx=10, Ny=10, cas=1;
 
 
 void initialiser_parametres() {

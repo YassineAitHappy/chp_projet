@@ -26,7 +26,7 @@ void bicgstab(double *b, double *x0, int N, double tol, int max) {
 
     for (int i = 0; i < max; i++) {
         // 1. v = A*p_i-1
-        copierTableau(produit_MV(p), v,N)
+        copierTableau(produit_MV(p), v,N);
         
         // 2. alpha = rho_i-1 / (r_hat, v)
         alpha = rho / produitScalaire(r_hat, v, N);

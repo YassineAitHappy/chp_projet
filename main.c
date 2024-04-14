@@ -126,7 +126,7 @@ int main(int argc, char* argv[]) {
             int Nt=0;
                 while (T_implicit < Tf) {
                     // Résolution du système d'équations pour la prochaine étape de temps
-                    bicgstab(vect_u, vect_un, Nx * Ny, 1E-8, 100);
+                    bicgstab(vect_u, vect_un, Nx * Ny, 1E-6, 5000);
                     copierTableau(vect_un,vect_u,Nx*Ny);
 
                     T_implicit += dt_imp; // Incrémentation du temps
