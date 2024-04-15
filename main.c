@@ -14,7 +14,7 @@ int main(int argc, char* argv[]) {
     // testing
 
     double dt_test=0.01;
-    double* x0 = (double*)malloc(Nx*Ny* sizeof(double));
+    double* x0 = (double*)malloc(Nx*Ny* sizeof(double));//ce vecteur permet l'affichage d'une colonne de la matrice
     for (int i=0 ;i<Nx*Ny ;i++)
     {   
         if (i==3){
@@ -25,15 +25,13 @@ int main(int argc, char* argv[]) {
         }
         
     }
-    //test bicg
-    
     for (int i=0 ;i<Nx*Ny ;i++)
     {   
-        if (space_scheme==1){
-            //printf("produit implicit: %f\n",x0[i]+dt_test*produit_MV(x0)[i]);
+        if (space_scheme==1){//A=I-dt*B
+            //printf("produit implicit: %f\n",x0[i]-dt_test*produit_MV(x0)[i]);
             
         }
-        else if(space_scheme==2){
+        else if(space_scheme==2){//A=I+dt*B
             //printf("produit explicit: %f\n",x0[i]+dt_test*produit_MV(x0)[i]);
            
         }
@@ -42,9 +40,9 @@ int main(int argc, char* argv[]) {
     double* vect_u = (double*)malloc(Nx*Ny* sizeof(double));
     for (int i=0 ;i<Nx*Ny ;i++)
     {
-        //vect_u[i]=exp(-(pow(maillage(i,0),2)+pow(maillage(i,1),2))/0.0075);//u0(maillage(i,0),maillage(i,1));
+        vect_u[i]=u0(maillage(i,0),maillage(i,1));//exp(-(pow(maillage(i,0),2)+pow(maillage(i,1),2))/0.0075)
         // printf("xi=%f,yj=%f: %f\n",maillage(i,0),maillage(i,1),vect_u[i]);
-        vect_u[i]=u0(maillage(i,0),maillage(i,1));
+        //vect_u[i]=u0(maillage(i,0),maillage(i,1));
     }
     double* vect_un = (double*)malloc(Nx*Ny* sizeof(double));
 
