@@ -23,7 +23,7 @@ void scalaireMultiplieTableau(double scalaire, double *vecteur, double *resultat
 
 double norm(double *A, int taille) ;
 
-
+double* implicit_diff(double *source);
 
 
 

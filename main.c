@@ -17,19 +17,23 @@ int main(int argc, char* argv[]) {
     double* x0 = (double*)malloc(Nx*Ny* sizeof(double));
     for (int i=0 ;i<Nx*Ny ;i++)
     {
-        x0[i]=1.;
+        x0[i]=2.;
     }
+    //test bicg
+    
     for (int i=0 ;i<Nx*Ny ;i++)
     {
+        // printf("%f\n",produit_MV(x0)[i]);
+
         //printf("%f\n",x0[i]+dt_test*produit_MV(x0)[i]);
     }
 
     double* vect_u = (double*)malloc(Nx*Ny* sizeof(double));
     for (int i=0 ;i<Nx*Ny ;i++)
     {
-        vect_u[i]=exp(-(pow(maillage(i,0),2)+pow(maillage(i,1),2))/0.0075);//u0(maillage(i,0),maillage(i,1));
+        //vect_u[i]=exp(-(pow(maillage(i,0),2)+pow(maillage(i,1),2))/0.0075);//u0(maillage(i,0),maillage(i,1));
         // printf("xi=%f,yj=%f: %f\n",maillage(i,0),maillage(i,1),vect_u[i]);
-        //vect_u[i]=u0(maillage(i,0),maillage(i,1));
+        vect_u[i]=u0(maillage(i,0),maillage(i,1));
     }
     double* vect_un = (double*)malloc(Nx*Ny* sizeof(double));
 

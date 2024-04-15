@@ -17,7 +17,7 @@ double gama( double x,double y);
     
 
 
-
+int modulo_pos(int k,int d);
 
 
 

@@ -66,16 +66,29 @@ double* v(double x, double y){
 
 double alpha( double x,double y){
     double res;
+    // res=1.0;
     res = v(x,y)[0]/(2*dx);
     return res;
 }
 double beta( double x,double y){
     double res;
+    //res=2.0;
     res = v(x,y)[1]/(2*dy);
     return res;
 }
 double gama( double x,double y){
     double res;
+    //res=3.0;
     res = -alpha(x,y)-beta(x,y);
     return res;
+}
+
+int modulo_pos(int k,int d){
+    int r;
+    r=k%d;
+    if (k<0){
+        r=r+d;
+
+    }
+    return r;
 }
