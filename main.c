@@ -39,8 +39,8 @@ int main(int argc, char* argv[]) {
 
     double* vect_u = (double*)malloc(Nx*Ny* sizeof(double));
     for (int i=0 ;i<Nx*Ny ;i++)
-    {
-        vect_u[i]=u0(maillage(i,0)-xmin/4,maillage(i,1)-ymin/4);//vecteur initiale
+    {   
+        vect_u[i]=u0(maillage(i,0),maillage(i,1));//vecteur initiale
     }
     double* vect_un = (double*)malloc(Nx*Ny* sizeof(double));
 
@@ -51,12 +51,12 @@ int main(int argc, char* argv[]) {
             //Trouver la cfl
             //trouver V_x max
             double max_vx; // Déclaration de max_vx au début du bloc de code
-            max_vx = abs(v(xmin, ymin)[0]); // Initialisation avec le coin en bas à gauche
+            max_vx = fabs(v(xmin, ymin)[0]); // Initialisation avec le coin en bas à gauche
             for (int i = 0; i < Nx; i++) {
                 double x = xmin + i * dx;
                 for (int j = 0; j < Ny; j++) {
                     double y = ymin + j * dy;
-                    double current_vx = abs(v(x, y)[0]);
+                    double current_vx = fabs(v(x, y)[0]);
                     if (current_vx > max_vx) {
                         max_vx = current_vx;
                     }
@@ -64,12 +64,12 @@ int main(int argc, char* argv[]) {
             }
             //trouver V_y max
             double max_vy; // Déclaration de max_vy au début du bloc de code
-            max_vy = abs(v(xmin, ymin)[1]); // Initialisation avec le coin en bas à gauche
+            max_vy = fabs(v(xmin, ymin)[1]); // Initialisation avec le coin en bas à gauche
             for (int i = 0; i < Nx; i++) {
                 double x = xmin + i * dx;
                 for (int j = 0; j < Ny; j++) {
                     double y = ymin + j * dy;
-                    double current_vy = abs(v(x, y)[1]);
+                    double current_vy = fabs(v(x, y)[1]);
                     if (current_vy > max_vy) {
                         max_vy = current_vy;
                     }
@@ -78,15 +78,12 @@ int main(int argc, char* argv[]) {
 
             CFL = (max_vx / dx) + (max_vy / dy);
             printf("cfl=%f",CFL);
-            if(cas==2){
-                CFL = (0.5 / dx) + (0.5 / dy);
-            }
             double dt = 1.0 / CFL;
             printf("dt=%f\n",dt);
             
 
             char filenam[120]; // Définissez la taille en fonction du format du nom du fichier
-            sprintf(filenam, "C:/Users/HP/Desktop/hpc/chp_projet/sol.%d.dat", 0); // Formatage du nom du fichier
+            sprintf(filenam, "./sol.%d.dat", 0); // Formatage du nom du fichier
             FILE* file_explicit = fopen(filenam, "w"); // Ouvrir le fichier en écriture
             if (file_explicit == NULL) {
                 printf("Erreur lors de la création du fichier %s\n", filenam);
@@ -111,7 +108,7 @@ int main(int argc, char* argv[]) {
                 T_explicit += dt; // Incrémentation du temps
                 Nt+=1;
                 char filename[120]; // Définissez la taille en fonction du format du nom du fichier
-                sprintf(filename, "C:/Users/HP/Desktop/hpc/chp_projet/sol.%d.dat", Nt); // Formatage du nom du fichier
+                sprintf(filename, "./sol.%d.dat", Nt); // Formatage du nom du fichier
                 FILE* file_explicit = fopen(filename, "w"); // Ouvrir le fichier en écriture
                 if (file_explicit == NULL) {
                     printf("Erreur lors de la création du fichier %s\n", filename);
@@ -131,7 +128,7 @@ int main(int argc, char* argv[]) {
     case 2: //Implicit
     {
         char filenam[120]; // Définissez la taille en fonction du format du nom du fichier
-            sprintf(filenam, "C:/Users/HP/Desktop/hpc/chp_projet/sol.%d.dat", 0); // Formatage du nom du fichier
+            sprintf(filenam, "./sol.%d.dat", 0); // Formatage du nom du fichier
             FILE* file_implicit = fopen(filenam, "w"); // Ouvrir le fichier en écriture
             if (file_implicit == NULL) {
                 printf("Erreur lors de la création du fichier %s\n", filenam);
@@ -153,7 +150,7 @@ int main(int argc, char* argv[]) {
                 T_implicit += dt_imp; // Incrémentation du temps
                 Nt+=1;
                 char filename[120]; // Définissez la taille en fonction du format du nom du fichier
-                sprintf(filename, "C:/Users/HP/Desktop/hpc/chp_projet/sol.%d.dat", Nt); // Formatage du nom du fichier
+                sprintf(filename, "./sol.%d.dat", Nt); // Formatage du nom du fichier
                 FILE* file_implicit = fopen(filename, "w"); // Ouvrir le fichier en écriture
                 if (file_implicit == NULL) {
                     printf("Erreur lors de la création du fichier %s\n", filename);
