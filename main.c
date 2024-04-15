@@ -16,12 +16,25 @@ int main(int argc, char* argv[]) {
     double dt_test=0.01;
     double* x0 = (double*)malloc(Nx*Ny* sizeof(double));
     for (int i=0 ;i<Nx*Ny ;i++)
-    {
-        x0[i]=1.;
+    {   
+        if (i==3){
+            x0[i]=1;
+        }
+        else{
+        x0[i]=0.;
+        }
+        
     }
     for (int i=0 ;i<Nx*Ny ;i++)
-    {
-        //printf("%f\n",x0[i]+dt_test*produit_MV(x0)[i]);
+    {   
+        if (space_scheme==1){
+            //printf("produit implicit: %f\n",x0[i]+dt_test*produit_MV(x0)[i]);
+            
+        }
+        else if(space_scheme==2){
+            //printf("produit explicit: %f\n",x0[i]+dt_test*produit_MV(x0)[i]);
+           
+        }
     }
 
     double* vect_u = (double*)malloc(Nx*Ny* sizeof(double));

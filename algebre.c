@@ -3,6 +3,7 @@
 #include "parametre.h"
 #include <stdlib.h> 
 #include "fonction.h"
+#include <stdio.h>
 extern int space_scheme, time_scheme;
 extern double dx, dy, xmin, xmax, ymin, ymax, Tf, CFL;
 extern int Nx, Ny, cas;
@@ -23,83 +24,149 @@ double* produit_MV( double* vecteur) {
             switch(space_scheme) {
 
 
-                case 1://Centré
-                    for(int j=1; j<=Ny;j++){
-                        if(j==1){
-                            for(int i=1;i<=Nx;i++){
-                                if(i==1){
-                                    resultat[indexe(i,j)]=alpha(maillage(indexe(i,j)+1,0),maillage(indexe(i,j)+1,1))*vecteur[indexe(i,j)+1];
-                                    resultat[indexe(i,j)]=resultat[indexe(i,j)]-alpha(maillage(indexe(i,j)+Nx-1,0),maillage(indexe(i,j)+Nx-1,1))*vecteur[indexe(i,j)+Nx-1];
-                                    resultat[indexe(i,j)]=resultat[indexe(i,j)]+beta(maillage(indexe(i,j)+Nx,0),maillage(indexe(i,j)+Nx,1))*vecteur[indexe(i,j)+Nx];
-                                    resultat[indexe(i,j)]=resultat[indexe(i,j)]-beta(maillage(indexe(i,j)+Nx*(Ny-1),0),maillage(indexe(i,j)+Nx*(Ny-1),1))*vecteur[indexe(i,j)+Nx*(Ny-1)];
-                                }
-                                else if(i==Nx){
-                                    resultat[indexe(i,j)]=alpha(maillage(indexe(i,j)-Nx+1,0),maillage(indexe(i,j)-Nx+1,1))*vecteur[indexe(i,j)-Nx+1];
-                                    resultat[indexe(i,j)]=resultat[indexe(i,j)]-alpha(maillage(indexe(i,j)-1,0),maillage(indexe(i,j)-1,1))*vecteur[indexe(i,j)-1];
-                                    resultat[indexe(i,j)]=resultat[indexe(i,j)]+beta(maillage(indexe(i,j)+Nx,0),maillage(indexe(i,j)+Nx,1))*vecteur[indexe(i,j)+Nx];
-                                    resultat[indexe(i,j)]=resultat[indexe(i,j)]-beta(maillage(indexe(i,j)+Nx*(Ny-1),0),maillage(indexe(i,j)+Nx*(Ny-1),1))*vecteur[indexe(i,j)+Nx*(Ny-1)];
-                                }
-                                else{
-                                    resultat[indexe(i,j)]=-alpha(maillage(indexe(i,j)-1,0),maillage(indexe(i,j)-1,1))*vecteur[indexe(i,j)-1];
-                                    resultat[indexe(i,j)]=resultat[indexe(i,j)]+alpha(maillage(indexe(i,j)+1,0),maillage(indexe(i,j)+1,1))*vecteur[indexe(i,j)+1];
-                                    resultat[indexe(i,j)]=resultat[indexe(i,j)]+beta(maillage(indexe(i,j)+Nx,0),maillage(indexe(i,j)+Nx,1))*vecteur[indexe(i,j)+Nx];
-                                    resultat[indexe(i,j)]=resultat[indexe(i,j)]-beta(maillage(indexe(i,j)+(Ny-1)*Nx,0),maillage(indexe(i,j)+(Ny-1)*Nx,1))*vecteur[indexe(i,j)+(Ny-1)*Nx];
-                                }
-                            }
+                // case 1://Centré
+                //     for(int j=1; j<=Ny;j++){
+                //         if(j==1){
+                //             for(int i=1;i<=Nx;i++){
+                //                 if(i==1){
+                //                     resultat[indexe(i,j)]=alpha(maillage(indexe(i,j)+1,0),maillage(indexe(i,j)+1,1))*vecteur[indexe(i,j)+1];
+                //                     resultat[indexe(i,j)]=resultat[indexe(i,j)]-alpha(maillage(indexe(i,j)+Nx-1,0),maillage(indexe(i,j)+Nx-1,1))*vecteur[indexe(i,j)+Nx-1];
+                //                     resultat[indexe(i,j)]=resultat[indexe(i,j)]+beta(maillage(indexe(i,j)+Nx,0),maillage(indexe(i,j)+Nx,1))*vecteur[indexe(i,j)+Nx];
+                //                     resultat[indexe(i,j)]=resultat[indexe(i,j)]-beta(maillage(indexe(i,j)+Nx*(Ny-1),0),maillage(indexe(i,j)+Nx*(Ny-1),1))*vecteur[indexe(i,j)+Nx*(Ny-1)];
+                //                     resultat[indexe(i,i)]=dt_imp*resultat[indexe(i,i)]+vecteur[indexe(i,i)];
+                //                 }
+                //                 else if(i==Nx){
+                //                     resultat[indexe(i,j)]=alpha(maillage(indexe(i,j)-Nx+1,0),maillage(indexe(i,j)-Nx+1,1))*vecteur[indexe(i,j)-Nx+1];
+                //                     resultat[indexe(i,j)]=resultat[indexe(i,j)]-alpha(maillage(indexe(i,j)-1,0),maillage(indexe(i,j)-1,1))*vecteur[indexe(i,j)-1];
+                //                     resultat[indexe(i,j)]=resultat[indexe(i,j)]+beta(maillage(indexe(i,j)+Nx,0),maillage(indexe(i,j)+Nx,1))*vecteur[indexe(i,j)+Nx];
+                //                     resultat[indexe(i,j)]=resultat[indexe(i,j)]-beta(maillage(indexe(i,j)+Nx*(Ny-1),0),maillage(indexe(i,j)+Nx*(Ny-1),1))*vecteur[indexe(i,j)+Nx*(Ny-1)];
+                //                     resultat[indexe(i,i)]=dt_imp*resultat[indexe(i,i)]+vecteur[indexe(i,i)];
+                //                 }
+                //                 else{
+                //                     resultat[indexe(i,j)]=-alpha(maillage(indexe(i,j)-1,0),maillage(indexe(i,j)-1,1))*vecteur[indexe(i,j)-1];
+                //                     resultat[indexe(i,j)]=resultat[indexe(i,j)]+alpha(maillage(indexe(i,j)+1,0),maillage(indexe(i,j)+1,1))*vecteur[indexe(i,j)+1];
+                //                     resultat[indexe(i,j)]=resultat[indexe(i,j)]+beta(maillage(indexe(i,j)+Nx,0),maillage(indexe(i,j)+Nx,1))*vecteur[indexe(i,j)+Nx];
+                //                     resultat[indexe(i,j)]=resultat[indexe(i,j)]-beta(maillage(indexe(i,j)+(Ny-1)*Nx,0),maillage(indexe(i,j)+(Ny-1)*Nx,1))*vecteur[indexe(i,j)+(Ny-1)*Nx];
+                //                     if(i==j){
+                //                         resultat[indexe(i,i)]=dt_imp*resultat[indexe(i,i)]+vecteur[indexe(i,i)];
+                //                     }
+                //                 }
+                //             }
+                //         }
+                //         else if(j==Ny){
+                //             for(int i=1;i<=Nx;i++){
+                //                 if(i==1){
+                //                     resultat[indexe(i,j)]=beta(maillage(indexe(i,j)-Nx*(Ny-1),0),maillage(indexe(i,j)-Nx*(Ny-1),1))*vecteur[indexe(i,j)-Nx*(Ny-1)];
+                //                     resultat[indexe(i,j)]=resultat[indexe(i,j)]-beta(maillage(indexe(i,j)-Nx,0),maillage(indexe(i,j)-Nx,1))*vecteur[indexe(i,j)-Nx];
+                //                     resultat[indexe(i,j)]=resultat[indexe(i,j)]+alpha(maillage(indexe(i,j)+1,0),maillage(indexe(i,j)+1,1))*vecteur[indexe(i,j)+1];
+                //                     resultat[indexe(i,j)]=resultat[indexe(i,j)]-alpha(maillage(indexe(i,j)+Nx-1,0),maillage(indexe(i,j)+Nx-1,1))*vecteur[indexe(i,j)+Nx-1];
+                //                     resultat[indexe(i,i)]=dt_imp*resultat[indexe(i,i)]+vecteur[indexe(i,i)];
+                //                 }
+                //                 else if(i==Nx){
+                //                     resultat[indexe(i,j)]=beta(maillage(indexe(i,j)-Nx*(Ny-1),0),maillage(indexe(i,j)-Nx*(Ny-1),1))*vecteur[indexe(i,j)-Nx*(Ny-1)];
+                //                     resultat[indexe(i,j)]=resultat[indexe(i,j)]-beta(maillage(indexe(i,j)-Nx,0),maillage(indexe(i,j)-Nx,1))*vecteur[indexe(i,j)-Nx];
+                //                     resultat[indexe(i,j)]=resultat[indexe(i,j)]+alpha(maillage(indexe(i,j)-Nx+1,0),maillage(indexe(i,j)-Nx+1,1))*vecteur[indexe(i,j)-Nx+1];
+                //                     resultat[indexe(i,j)]=resultat[indexe(i,j)]-alpha(maillage(indexe(i,j)-1,0),maillage(indexe(i,j)-1,1))*vecteur[indexe(i,j)-1];
+                //                     resultat[indexe(i,i)]=dt_imp*resultat[indexe(i,i)]+vecteur[indexe(i,i)];
+                //                 }
+                //                 else{
+                //                     resultat[indexe(i,j)]=beta(maillage(indexe(i,j)-Nx*(Ny-1),0),maillage(indexe(i,j)-Nx*(Ny-1),1))*vecteur[indexe(i,j)-Nx*(Ny-1)];
+                //                     resultat[indexe(i,j)]=resultat[indexe(i,j)]-beta(maillage(indexe(i,j)-Nx,0),maillage(indexe(i,j)-Nx,1))*vecteur[indexe(i,j)-Nx];
+                //                     resultat[indexe(i,j)]=resultat[indexe(i,j)]+alpha(maillage(indexe(i,j)+1,0),maillage(indexe(i,j)+1,1))*vecteur[indexe(i,j)+1];
+                //                     resultat[indexe(i,j)]=resultat[indexe(i,j)]-alpha(maillage(indexe(i,j)-1,0),maillage(indexe(i,j)-1,1))*vecteur[indexe(i,j)-1];
+                //                     if(i==j){
+                //                         resultat[indexe(i,i)]=dt_imp*resultat[indexe(i,i)]+vecteur[indexe(i,i)];
+                //                     }
+                //                 }
+                //             }
+                //         }
+                        
+                //         else if(j!=1 && j!=Ny){
+                //             for(int i=1;i<=Nx;i++){
+                //                 if(i%Nx==1){
+                //                     resultat[indexe(i,j)]=-beta(maillage(indexe(i,j)-Nx,0),maillage(indexe(i,j)-Nx,1))*vecteur[indexe(i,j)-Nx];
+                //                     resultat[indexe(i,j)]=resultat[indexe(i,j)]+alpha(maillage(indexe(i,j)+1,0),maillage(indexe(i,j)+1,1))*vecteur[indexe(i,j)+1];
+                //                     resultat[indexe(i,j)]=resultat[indexe(i,j)]-alpha(maillage(indexe(i,j)+Nx-1,0),maillage(indexe(i,j)+Nx-1,1))*vecteur[indexe(i,j)+Nx-1];
+                //                     resultat[indexe(i,j)]=resultat[indexe(i,j)]+beta(maillage(indexe(i,j)+Nx,0),maillage(indexe(i,j)+Nx,1))*vecteur[indexe(i,j)+Nx];
+                            
+                //                     resultat[indexe(i,i)]=dt_imp*resultat[indexe(i,i)]+vecteur[indexe(i,i)];
+                                    
+                //                 }
+                //                 else if(i%Nx==0){
+                //                     resultat[indexe(i,j)]=-beta(maillage(indexe(i,j)-Nx,0),maillage(indexe(i,j)-Nx,1))*vecteur[indexe(i,j)-Nx];
+                //                     resultat[indexe(i,j)]=resultat[indexe(i,j)]+alpha(maillage(indexe(i,j)-Nx+1,0),maillage(indexe(i,j)-Nx+1,1))*vecteur[indexe(i,j)-Nx+1];
+                //                     resultat[indexe(i,j)]=resultat[indexe(i,j)]-alpha(maillage(indexe(i,j)-1,0),maillage(indexe(i,j)-1,1))*vecteur[indexe(i,j)-1];
+                //                     resultat[indexe(i,j)]=resultat[indexe(i,j)]+beta(maillage(indexe(i,j)+Nx,0),maillage(indexe(i,j)+Nx,1))*vecteur[indexe(i,j)+Nx];
+                //                     resultat[indexe(i,i)]=dt_imp*resultat[indexe(i,i)]+vecteur[indexe(i,i)];
+                //                 }
+                //                 else{
+                //                     resultat[indexe(i,j)]=-beta(maillage(indexe(i,j)-Nx,0),maillage(indexe(i,j)-Nx,1))*vecteur[indexe(i,j)-Nx];
+                //                     resultat[indexe(i,j)]=resultat[indexe(i,j)]+alpha(maillage(indexe(i,j)+1,0),maillage(indexe(i,j)+1,1))*vecteur[indexe(i,j)+1];
+                //                     resultat[indexe(i,j)]=resultat[indexe(i,j)]-alpha(maillage(indexe(i,j)-1,0),maillage(indexe(i,j)-1,1))*vecteur[indexe(i,j)-1];
+                //                     resultat[indexe(i,j)]=resultat[indexe(i,j)]+beta(maillage(indexe(i,j)+Nx,0),maillage(indexe(i,j)+Nx,1))*vecteur[indexe(i,j)+Nx];
+                //                     if(i==j){
+                //                         resultat[indexe(i,i)]=dt_imp*resultat[indexe(i,i)]+vecteur[indexe(i,i)];
+                //                     }
+                //                 }
+                //             }
+                //         }
+
+                        
+                //     double* resultat_copy = (double*)malloc(Nx*Ny* sizeof(double));
+                //     copierTableau(resultat,resultat_copy,Nx*Ny);
+                //     scalaireMultiplieTableau(dt_imp,resultat,resultat,Nx*Ny);
+                //     sommeTableaux(resultat,resultat_copy,resultat,Nx*Ny);
+
+                    
+                    
+                //     }
+                    
+                //     break; 
+                case 1:
+                    for (int I=0;I<Nx*Ny;I++){
+                        if(I==0){
+                            resultat[I]=alpha(maillage(I+1,0),maillage(I+1,1))*vecteur[I+1]-alpha(maillage(I+Nx-1,0),maillage(I+Nx-1,1))*vecteur[I+Nx-1]+beta(maillage(I+Nx,0),maillage(I+Nx,1))*vecteur[I+Nx]-beta(maillage(I+Nx*(Ny-1),0),maillage(I+Nx*(Ny-1),1))*vecteur[I+Nx*(Ny-1)];
                         }
-                        else if(j==Ny){
-                            for(int i=1;i<=Nx;i++){
-                                if(i==1){
-                                    resultat[indexe(i,j)]=beta(maillage(indexe(i,j)-Nx*(Ny-1),0),maillage(indexe(i,j)-Nx*(Ny-1),1))*vecteur[indexe(i,j)-Nx*(Ny-1)];
-                                    resultat[indexe(i,j)]=resultat[indexe(i,j)]-beta(maillage(indexe(i,j)-Nx,0),maillage(indexe(i,j)-Nx,1))*vecteur[indexe(i,j)-Nx];
-                                    resultat[indexe(i,j)]=resultat[indexe(i,j)]+alpha(maillage(indexe(i,j)+1,0),maillage(indexe(i,j)+1,1))*vecteur[indexe(i,j)+1];
-                                    resultat[indexe(i,j)]=resultat[indexe(i,j)]-alpha(maillage(indexe(i,j)+Nx-1,0),maillage(indexe(i,j)+Nx-1,1))*vecteur[indexe(i,j)+Nx-1];
+                        else if((0<I)&&(I<Nx-1)){
+                            resultat[I]=-alpha(maillage(I-1,0),maillage(I-1,1))*vecteur[I-1]+alpha(maillage(I+1,0),maillage(I+1,1))*vecteur[I+1]+beta(maillage(I+Nx,0),maillage(I+Nx,1))*vecteur[I+Nx]-beta(maillage(I+(Ny-1)*Nx,0),maillage(I+(Ny-1)*Nx,1))*vecteur[I+(Ny-1)*Nx];
+                            
+                        }
+                        else if(I==Nx-1){
+                            resultat[I]=alpha(maillage(I-Nx+1,0),maillage(I-Nx+1,1))*vecteur[I-Nx+1]-alpha(maillage(I-1,0),maillage(I-1,1))*vecteur[I-1]+beta(maillage(I+Nx,0),maillage(I+Nx,1))*vecteur[I+Nx]-beta(maillage(I+Nx*(Ny-1),0),maillage(I+Nx*(Ny-1),1))*vecteur[I+Nx*(Ny-1)];
+                        }
+                        else if(I==Nx*(Ny-1)){
+                            resultat[I]=beta(maillage(I-Nx*(Ny-1),0),maillage(I-Nx*(Ny-1),1))*vecteur[I-Nx*(Ny-1)]-beta(maillage(I-Nx,0),maillage(I-Nx,1))*vecteur[I-Nx]+alpha(maillage(I+1,0),maillage(I+1,1))*vecteur[I+1]-alpha(maillage(I+Nx-1,0),maillage(I+Nx-1,1))*vecteur[I+Nx-1];
+                        }
+                        else if(I==Nx*(Ny-1)+Nx-1){
+                            resultat[I]=beta(maillage(I-Nx*(Ny-1),0),maillage(I-Nx*(Ny-1),1))*vecteur[I-Nx*(Ny-1)]-beta(maillage(I-Nx,0),maillage(I-Nx,1))*vecteur[I-Nx]+alpha(maillage(I-Nx+1,0),maillage(I-Nx+1,1))*vecteur[I-Nx+1]-alpha(maillage(I-1,0),maillage(I-1,1))*vecteur[I-1];
+
+                        }
+                        else if((Nx*(Ny-1)<I)&&(I<Nx*(Ny-1)+Nx-1)){
+                            resultat[I]=beta(maillage(I-Nx*(Ny-1),0),maillage(I-Nx*(Ny-1),1))*vecteur[I-Nx*(Ny-1)]-beta(maillage(I-Nx,0),maillage(I-Nx,1))*vecteur[I-Nx]+alpha(maillage(I+1,0),maillage(I+1,1))*vecteur[I+1]-alpha(maillage(I-1,0),maillage(I-1,1))*vecteur[I-1];
+                            
+                        }
+                        else if((Nx-1<I)&&(I<Nx*(Ny-1))){
+                            
+                            if(I%Nx==0){
+                                    resultat[I]= -beta(maillage(I-Nx,0),maillage(I-Nx,1))*vecteur[I-Nx]+alpha(maillage(I+1,0),maillage(I+1,1))*vecteur[I+1]-alpha(maillage(I+Nx-1,0),maillage(I+Nx-1,1))*vecteur[I+Nx-1]+beta(maillage(I+Nx,0),maillage(I+Nx,1))*vecteur[I+Nx];
                                 }
-                                else if(i==Nx){
-                                    resultat[indexe(i,j)]=beta(maillage(indexe(i,j)-Nx*(Ny-1),0),maillage(indexe(i,j)-Nx*(Ny-1),1))*vecteur[indexe(i,j)-Nx*(Ny-1)];
-                                    resultat[indexe(i,j)]=resultat[indexe(i,j)]-beta(maillage(indexe(i,j)-Nx,0),maillage(indexe(i,j)-Nx,1))*vecteur[indexe(i,j)-Nx];
-                                    resultat[indexe(i,j)]=resultat[indexe(i,j)]+alpha(maillage(indexe(i,j)-Nx+1,0),maillage(indexe(i,j)-Nx+1,1))*vecteur[indexe(i,j)-Nx+1];
-                                    resultat[indexe(i,j)]=resultat[indexe(i,j)]-alpha(maillage(indexe(i,j)-1,0),maillage(indexe(i,j)-1,1))*vecteur[indexe(i,j)-1];
+                            else if(I%Nx==Nx-1){
+                                    resultat[I]=-beta(maillage(I-Nx,0),maillage(I-Nx,1))*vecteur[I-Nx]+alpha(maillage(I-Nx+1,0),maillage(I-Nx+1,1))*vecteur[I-Nx+1]-alpha(maillage(I-1,0),maillage(I-1,1))*vecteur[I-1]+beta(maillage(I+Nx,0),maillage(I+Nx,1))*vecteur[I+Nx];
+                                    
                                 }
-                                else{
-                                    resultat[indexe(i,j)]=beta(maillage(indexe(i,j)-Nx*(Ny-1),0),maillage(indexe(i,j)-Nx*(Ny-1),1))*vecteur[indexe(i,j)-Nx*(Ny-1)];
-                                    resultat[indexe(i,j)]=resultat[indexe(i,j)]-beta(maillage(indexe(i,j)-Nx,0),maillage(indexe(i,j)-Nx,1))*vecteur[indexe(i,j)-Nx];
-                                    resultat[indexe(i,j)]=resultat[indexe(i,j)]+alpha(maillage(indexe(i,j)+1,0),maillage(indexe(i,j)+1,1))*vecteur[indexe(i,j)+1];
-                                    resultat[indexe(i,j)]=resultat[indexe(i,j)]-alpha(maillage(indexe(i,j)-1,0),maillage(indexe(i,j)-1,1))*vecteur[indexe(i,j)-1];
-                                }
+                            
+                            else if((I%Nx!=0) && (I%Nx!=Nx-1)){
+                                resultat[I]=-beta(maillage(I-Nx,0),maillage(I-Nx,1))*vecteur[I-Nx]+alpha(maillage(I+1,0),maillage(I+1,1))*vecteur[I+1]-alpha(maillage(I-1,0),maillage(I-1,1))*vecteur[I-1]+beta(maillage(I+Nx,0),maillage(I+Nx,1))*vecteur[I+Nx];
+                                
+                                    
                             }
                         }
                         
-                        else{
-                            for(int i=1;i<=Nx;i++){
-                                if(i%Nx==1){
-                                    resultat[indexe(i,j)]=-beta(maillage(indexe(i,j)-Nx,0),maillage(indexe(i,j)-Nx,1))*vecteur[indexe(i,j)-Nx];
-                                    resultat[indexe(i,j)]=resultat[indexe(i,j)]+alpha(maillage(indexe(i,j)+1,0),maillage(indexe(i,j)+1,1))*vecteur[indexe(i,j)+1];
-                                    resultat[indexe(i,j)]=resultat[indexe(i,j)]-alpha(maillage(indexe(i,j)+Nx-1,0),maillage(indexe(i,j)+Nx-1,1))*vecteur[indexe(i,j)+Nx-1];
-                                    resultat[indexe(i,j)]=resultat[indexe(i,j)]+beta(maillage(indexe(i,j)+Nx,0),maillage(indexe(i,j)+Nx,1))*vecteur[indexe(i,j)+Nx];
-                                }
-                                else if(i%Nx==0){
-                                    resultat[indexe(i,j)]=-beta(maillage(indexe(i,j)-Nx,0),maillage(indexe(i,j)-Nx,1))*vecteur[indexe(i,j)-Nx];
-                                    resultat[indexe(i,j)]=resultat[indexe(i,j)]+alpha(maillage(indexe(i,j)-Nx+1,0),maillage(indexe(i,j)-Nx+1,1))*vecteur[indexe(i,j)-Nx+1];
-                                    resultat[indexe(i,j)]=resultat[indexe(i,j)]-alpha(maillage(indexe(i,j)-1,0),maillage(indexe(i,j)-1,1))*vecteur[indexe(i,j)-1];
-                                    resultat[indexe(i,j)]=resultat[indexe(i,j)]+beta(maillage(indexe(i,j)+Nx,0),maillage(indexe(i,j)+Nx,1))*vecteur[indexe(i,j)+Nx];
-                                }
-                                else{
-                                    resultat[indexe(i,j)]=-beta(maillage(indexe(i,j)-Nx,0),maillage(indexe(i,j)-Nx,1))*vecteur[indexe(i,j)-Nx];
-                                    resultat[indexe(i,j)]=resultat[indexe(i,j)]+alpha(maillage(indexe(i,j)+1,0),maillage(indexe(i,j)+1,1))*vecteur[indexe(i,j)+1];
-                                    resultat[indexe(i,j)]=resultat[indexe(i,j)]-alpha(maillage(indexe(i,j)-1,0),maillage(indexe(i,j)-1,1))*vecteur[indexe(i,j)-1];
-                                    resultat[indexe(i,j)]=resultat[indexe(i,j)]+beta(maillage(indexe(i,j)+Nx,0),maillage(indexe(i,j)+Nx,1))*vecteur[indexe(i,j)+Nx];
-                                }
-                            }
-                        }
-                    double* resultat_copy = (double*)malloc(Nx*Ny* sizeof(double));
-                    copierTableau(resultat,resultat_copy,Nx*Ny);
-                    scalaireMultiplieTableau(dt_imp,resultat,resultat,Nx*Ny);
-                    sommeTableaux(resultat,resultat_copy,resultat,Nx*Ny);
-                
+                        
                     }
-                    break; 
+                    
 
+                    break;
 
                 case 2://Upwind
 
