@@ -3,7 +3,7 @@
  
 int space_scheme=1, time_scheme=2;
 double dx, dy, xmin, xmax, ymin, ymax, Tf, CFL;
-double dt_imp=0.;
+double dt_imp=0.1;
 int Nx=10, Ny=10, cas=1;///Nx et Ny
 
 
