@@ -274,17 +274,3 @@ void scalaireMultiplieTableau(double scalaire, double *vecteur, double *resultat
         resultat[i] = scalaire * vecteur[i];
     }
 }
-
-double* implicit_diff(double *source) { //effectue un+1-dt*A*un+1 utilisé en bicgstab
-
-
-    double* resultat = (double*)malloc(Nx*Ny* sizeof(double)); 
-
-
-
-                    copierTableau(produit_MV(source),resultat,Nx*Ny);
-                    scalaireMultiplieTableau(dt_imp,resultat,resultat,Nx*Ny);
-                    differenceTableaux(source,resultat,resultat,Nx*Ny);
-                    return resultat;
-}
-                
