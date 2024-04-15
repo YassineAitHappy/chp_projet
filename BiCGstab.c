@@ -4,6 +4,7 @@
 #include "math.h"
 #include "stdio.h"
 #include "stdlib.h"
+#include "parametre.h"
 
 
 
@@ -18,7 +19,8 @@ void bicgstab(double *b, double *x0, int N, double tol, int max) {
     double rho, alpha, omega, beta;
 
     // Initial values
-    copierTableau(implicit_diff(x0), r,N); // r = A*x0
+    scalaireMultiplieTableau(dt_imp,produit_MV(x0),r,N);
+    sommeTableaux(r,x0,r,N); // r = A*x0
     differenceTableaux(b, r, r, N); // r = b - r
     copierTableau(r, r_hat, N); // r_hat = r
     copierTableau(r, p, N); // p = r
@@ -26,7 +28,8 @@ void bicgstab(double *b, double *x0, int N, double tol, int max) {
 
     for (int i = 0; i < max; i++) {
         // 1. v = A*p_i-1
-        copierTableau(implicit_diff(p), v,N);
+        scalaireMultiplieTableau(dt_imp,produit_MV(p),v,N);
+        sommeTableaux(v,p,v,N);
         
         // 2. alpha = rho_i-1 / (r_hat, v)
         alpha = rho / produitScalaire(r_hat, v, N);
@@ -46,7 +49,8 @@ void bicgstab(double *b, double *x0, int N, double tol, int max) {
         }
 
         // 6. t = A*s
-        copierTableau(implicit_diff(s), t,N);
+        scalaireMultiplieTableau(dt_imp,produit_MV(s),t,N);
+        sommeTableaux(t,s,t,N);
         
         // 7. omega = (t,s) / (t,t)
         omega = produitScalaire(t, s, N) / produitScalaire(t, t, N);
